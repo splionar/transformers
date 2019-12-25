@@ -472,7 +472,7 @@ def evaluate(args, model, tokenizer, prefix=""):
     result = {"eval_loss": eval_loss, "eval_accuracy": eval_accuracy} 
 
     output_eval_file = os.path.join(args.output_dir, "eval_results.txt")
-    output_prediction_file = os.path.join(args.output_dir, "prediction.txt")
+    output_prediction_file = os.path.join(args.output_dir, "prediction")
     np.save(output_prediction_file,prediction_list)
     with open(output_eval_file, "w") as writer:
         logger.info("***** Eval results *****")
