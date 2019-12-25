@@ -417,7 +417,6 @@ def train(args, train_dataset, model, tokenizer):
 
     return global_step, tr_loss / global_step
 
-
 def evaluate(args, model, tokenizer, prefix=""):
     dataset, examples, features = load_and_cache_examples(args, tokenizer, evaluate=True, output_examples=True)
 
@@ -470,9 +469,11 @@ def evaluate(args, model, tokenizer, prefix=""):
 
     eval_loss = eval_loss / nb_eval_steps
     eval_accuracy = eval_accuracy / nb_eval_examples
-    result = {"eval_loss": eval_loss, "eval_accuracy": eval_accuracy, "prediction_list": prediction_list}
+    result = {"eval_loss": eval_loss, "eval_accuracy": eval_accuracy} 
 
     output_eval_file = os.path.join(args.output_dir, "eval_results.txt")
+    output_prediction_file = os.path.join(args.output_dir, "prediction.txt")
+    np.save(output_prediction_file,prediction_list)
     with open(output_eval_file, "w") as writer:
         logger.info("***** Eval results *****")
         for key in sorted(result.keys()):
