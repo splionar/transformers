@@ -436,6 +436,7 @@ def evaluate(args, model, tokenizer, prefix=""):
 
     eval_loss, eval_accuracy = 0, 0
     nb_eval_steps, nb_eval_examples = 0, 0
+    logits_list = np.empty((0,3))
 
     for batch in tqdm(eval_dataloader, desc="Evaluating"):
         model.eval()
@@ -457,6 +458,7 @@ def evaluate(args, model, tokenizer, prefix=""):
             eval_loss += tmp_eval_loss.mean().item()
 
         logits = logits.detach().cpu().numpy()
+        logits_list = np.append(logits_list, logits, axis=0)
         label_ids = inputs["labels"].to("cpu").numpy()
         tmp_eval_accuracy = accuracy(logits, label_ids)
         eval_accuracy += tmp_eval_accuracy
@@ -466,7 +468,7 @@ def evaluate(args, model, tokenizer, prefix=""):
 
     eval_loss = eval_loss / nb_eval_steps
     eval_accuracy = eval_accuracy / nb_eval_examples
-    result = {"eval_loss": eval_loss, "eval_accuracy": eval_accuracy, "logits": logits}
+    result = {"eval_loss": eval_loss, "eval_accuracy": eval_accuracy, "logits": logits_list}
 
     output_eval_file = os.path.join(args.output_dir, "eval_results.txt")
     with open(output_eval_file, "w") as writer:
