@@ -466,7 +466,7 @@ def evaluate(args, model, tokenizer, prefix=""):
 
     eval_loss = eval_loss / nb_eval_steps
     eval_accuracy = eval_accuracy / nb_eval_examples
-    result = {"eval_loss": eval_loss, "eval_accuracy": eval_accuracy}
+    result = {"eval_loss": eval_loss, "eval_accuracy": eval_accuracy, "logits": logits}
 
     output_eval_file = os.path.join(args.output_dir, "eval_results.txt")
     with open(output_eval_file, "w") as writer:
